@@ -6,7 +6,7 @@ This project is a full-stack web application for managing restaurant reservation
 
 You can deploy this project to platforms like  [Render](https://render.com/)
 
-Link:- 
+Link:-  https://pr-restaurant-website-node-js.onrender.com
 
 ## Screenshots
 
