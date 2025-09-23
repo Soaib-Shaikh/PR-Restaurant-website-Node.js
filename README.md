@@ -2,6 +2,11 @@
 
 This project is a full-stack web application for managing restaurant reservations, menu items, orders, and user authentication. It features an admin dashboard, user profile management, and email confirmation for reservations.
 
+## Deployment
+
+You can deploy this project to platforms like  [Render](https://render.com/)
+
+Link:- 
 
 ## Screenshots
 
@@ -76,13 +81,6 @@ This project is a full-stack web application for managing restaurant reservation
 	- Add, edit, or remove menu items and restaurants.
 	- View all reservations and orders placed by users.
 
-## Deployment
-
-You can deploy this project to platforms like  [Render](https://render.com/)
-
-**Deployment Link:** 
-
-Link:- 
 
 ## Technologies Used
 - Node.js
