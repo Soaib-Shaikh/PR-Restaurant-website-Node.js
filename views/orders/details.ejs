@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+
+<section class="container my-5">
+  <% if (order) { %>
+    <div class="card shadow-lg p-4">
+      <h2 class="mb-3 text-primary">Order #<%= order._id %></h2>
+
+      <p><strong>User:</strong> <%= order.user ? order.user.fullName : 'Guest' %></p>
+      <p>
+        <strong>Status:</strong> 
+        <span class="badge 
+          <%= order.status === 'pending' ? 'bg-warning text-dark' : 
+              order.status === 'confirmed' ? 'bg-info' : 
+              order.status === 'completed' ? 'bg-success' : 
+              'bg-danger' %>">
+          <%= order.status || 'Pending' %>
+        </span>
+      </p>
+
+      <h4 class="mt-4">Items</h4>
+      <ul class="list-group mb-3">
+        <% order.items.forEach(item => { %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong><%= item.menu ? item.menu.name : 'Item' %></strong>  
+              <small class="text-muted">x <%= item.quantity %></small>
+            </div>
+            <span>Rs. <%= item.menu ? item.menu.price * item.quantity : 0 %></span>
+          </li>
+        <% }) %>
+      </ul>
+
+      <p class="fs-5"><strong>Total:</strong> Rs. <%= order.total || 0 %></p>
+      <p class="text-muted"><small>Placed on: <%= new Date(order.createdAt).toLocaleString() %></small></p>
+
+      <div class="mt-3">
+        <a href="/restaurant/<%= order.restaurant %>/menu" class="btn btn-outline-primary">Order More</a>
+        <a href="/" class="btn btn-secondary">Back to Home</a>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="alert alert-danger">
+      Order not found.
+    </div>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,60 @@
+<%- include('./dashboardHeader') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0"><%= menu ? 'Edit Menu Item' : 'Add Menu Item' %></h3>
+  <a href="/admin/menus" class="btn btn-outline-secondary">Back to List</a>
+</div>
+
+<div class="form-card p-4 shadow-sm">
+  <form action="<%= menu ? '/admin/menus/edit/' + menu._id : '/admin/menus/add' %>" method="POST" enctype="multipart/form-data">
+    <div class="row g-3">
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Restaurant</label>
+        <select name="restaurant" class="form-select" required>
+          <% restaurants.forEach(r => { %>
+            <option value="<%= r._id %>" <%= menu && menu.restaurant && (menu.restaurant.toString()===r._id.toString()) ? 'selected' : '' %>><%= r.name %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Category</label>
+        <select name="category" class="form-select" required>
+          <% ['Indian','Chinese','Italian','Mexican','Cafe'].forEach(cat => { %>
+            <option value="<%= cat %>" <%= menu && menu.category === cat ? 'selected' : '' %>><%= cat %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Name</label>
+        <input name="name" class="form-control" value="<%= menu ? menu.name : '' %>" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Price</label>
+        <input name="price" type="number" step="0.01" class="form-control" value="<%= menu ? menu.price : '' %>">
+      </div>
+
+      <div class="col-12">
+        <label class="form-label fw-semibold">Description</label>
+        <textarea name="description" rows="3" class="form-control"><%= menu ? menu.description : '' %></textarea>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Image</label>
+        <input id="menuImgInput" type="file" name="image" class="form-control">
+        <img id="menuPreview" src="<%= menu && menu.image ? menu.image : '/uploads/menu-default.png' %>" class="mt-2 rounded shadow-sm" style="width:120px; height:auto;">
+      </div>
+
+      <div class="col-12 text-end mt-3">
+        <button class="btn btn-brand px-4 py-2"><%= menu ? 'Update Menu' : 'Add Menu' %></button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<script> previewImage('menuImgInput','menuPreview'); </script>
+<%- include('./dashboardFooter') %>

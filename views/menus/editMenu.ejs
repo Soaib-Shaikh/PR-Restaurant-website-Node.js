@@ -1,0 +1,69 @@
+<%- include('../partials/header') %>
+
+    <div class="container my-5">
+        <!-- Back Button -->
+        <a href="/restaurant" class="btn btn-secondary mb-4">← Back to Menu List</a>
+
+        <div class="card shadow-sm p-4">
+            <h3 class="mb-4">Edit Menu Item</h3>
+
+            <form action="/menu/edit/<%= menu._id %>" method="POST" enctype="multipart/form-data">
+                <!-- Name -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">Dish Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="<%= menu.name %>" required>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description"
+                        rows="3"><%= menu.description %></textarea>
+                </div>
+
+                <!-- Price -->
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price (₹)</label>
+                    <input type="number" class="form-control" id="price" name="price" value="<%= menu.price %>"
+                        required>
+                </div>
+
+                <!-- Category -->
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="">-- Select Category --</option>
+                        <option value="Indian" <%=menu.category==='Indian' ? 'selected' : '' %>>Indian</option>
+                        <option value="Chinese" <%=menu.category==='Chinese' ? 'selected' : '' %>>Chinese</option>
+                        <option value="Italian" <%=menu.category==='Italian' ? 'selected' : '' %>>Italian</option>
+                        <option value="Mexican" <%=menu.category==='Mexican' ? 'selected' : '' %>>Mexican</option>
+                        <option value="Cafe" <%=menu.category==='Cafe' ? 'selected' : '' %>>Cafe</option>
+                    </select>
+                </div>
+
+                <!-- Current Image -->
+                <!-- Current Image -->
+                <div class="mb-3">
+                    <label class="form-label d-block">Current Image</label>
+                    <% if (menu.image) { %>
+                        <img src="<%= menu.image %>?t=<%= Date.now() %>" alt="<%= menu.name %>"
+                            class="img-thumbnail mb-2" width="150">
+                        <% } else { %>
+                            <p class="text-muted">No image uploaded</p>
+                            <% } %>
+                </div>
+
+
+                <!-- Upload New Image -->
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload New Image</label>
+                    <input type="file" class="form-control" id="image" name="image">
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-primary">Update Menu</button>
+            </form>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

@@ -1,0 +1,74 @@
+<%- include('./dashboardHeader') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Reservations</h3>
+        <a href="/admin/dashboard" class="btn btn-outline-secondary">Back to Dashboard</a>
+    </div>
+
+    <div class="table-card">
+        <div class="table-responsive">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>User</th>
+                        <th>Restaurant</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Guests</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% reservations.forEach((r, i)=> { %>
+                        <tr>
+                            <td>
+                                <%= i+1 %>
+                            </td>
+                            <td>
+                                <%= r.user ? r.user.fullName || r.user.username : '—' %>
+                            </td>
+                            <td>
+                                <%= r.restaurant ? r.restaurant.name : '—' %>
+                            </td>
+                            <td>
+                                <%= new Date(r.date).toLocaleDateString() %>
+                            </td>
+                            <td>
+                                <%= r.time %>
+                            </td>
+                            <td>
+                                <%= r.guests %>
+                            </td>
+                            <td>
+                                <%= r.status || 'pending' %>
+                            </td>
+                            <td>
+                                <form action="/admin/reservations/edit/<%= r._id %>" method="POST"
+                                    class="d-flex align-items-center">
+                                    <select name="status" class="form-select form-select-sm" style="width:120px;">
+                                        <option value="pending" <%=(r.status==='pending' )?'selected':'' %>>Pending
+                                        </option>
+                                        <option value="confirmed" <%=(r.status==='confirmed' )?'selected':'' %>
+                                            >Confirmed</option>
+                                        <option value="cancelled" <%=(r.status==='cancelled' )?'selected':'' %>
+                                            >Cancelled</option>
+                                    </select>
+                                    <button class="btn btn-primary btn-sm ms-1" type="submit">Update</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                        <% }) %>
+                            <% if(reservations.length===0){ %>
+                                <tr>
+                                    <td colspan="8" class="text-center py-4 text-muted">No reservations found.</td>
+                                </tr>
+                                <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <%- include('./dashboardFooter') %>

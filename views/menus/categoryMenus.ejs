@@ -1,0 +1,53 @@
+<%- include('../partials/header') %>
+
+<section class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="section-title">Menus: <%= category %></h4>
+    <a href="/" class="btn btn-secondary">← Back to Home</a>
+  </div>
+
+  <div class="row mt-4">
+    <% if (menus && menus.length > 0) { %>
+      <% menus.forEach(menu => { %>
+        <div class="col-md-3 mb-4">
+          <div class="card h-100 shadow-sm">
+            <img src="<%= menu.image %>" 
+                 class="card-img-top" 
+                 style="height:180px; object-fit:cover;"
+                 alt="<%= menu.name %>" 
+                 onerror="this.onerror=null;this.src='/uploads/menu-default.png';">
+
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title mb-2"><%= menu.name %></h5>
+              <p class="card-text text-muted mb-1">Category: <%= menu.category %></p>
+              <p class="card-text fw-bold mb-2">Rs. <%= menu.price.toFixed(2) %></p>
+              <p class="card-text text-truncate"><%= menu.description || '' %></p>
+
+              <!-- Restaurant name -->
+              <small class="text-muted d-block mb-2">
+                <%= menu.restaurant ? menu.restaurant.name : 'Unknown Restaurant' %>
+              </small>
+
+              <!-- Order Now Button -->
+              <a href="/order/new/<%= menu._id %>" class="btn btn-sm btn-success mt-auto">Order Now</a>
+
+              <!-- Owner only buttons -->
+              <% if (user && menu.restaurant && menu.restaurant.createdBy.toString() === user._id.toString()) { %>
+                <div class="mt-2">
+                  <a href="/menu/edit/<%= menu._id %>" class="btn btn-sm btn-primary mb-1">Edit</a>
+                  <form action="/menu/delete/<%= menu._id %>" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                  </form>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p class="text-center text-muted">No menus found for this category.</p>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

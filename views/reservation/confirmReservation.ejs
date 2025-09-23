@@ -1,0 +1,39 @@
+<%- include('../partials/header') %>
+
+    <div class="container my-5">
+        <div class="card shadow p-4 text-center">
+            <h2 class="text-success mb-3">🎉 Reservation Confirmed!</h2>
+            <p class="lead">Thank you, <%= reservation.name %>!</p>
+
+            <p>Your table at <strong>
+                    <%= reservation.restaurant.name %>
+                </strong> has been reserved.</p>
+
+            <ul class="list-group my-3 text-start">
+                <li class="list-group-item"><strong>Date:</strong>
+                    <%= new Date(reservation.date).toDateString() %>
+                </li>
+                <li class="list-group-item"><strong>Time:</strong>
+                    <%= reservation.time %>
+                </li>
+                <li class="list-group-item"><strong>Guests:</strong>
+                    <%= reservation.guests %>
+                </li>
+                <li class="list-group-item"><strong>Email:</strong>
+                    <%= reservation.email %>
+                </li>
+                <li class="list-group-item"><strong>Phone:</strong>
+                    <%= reservation.phone %>
+                </li>
+            </ul>
+
+            <div class="d-flex">
+                <a href="/restaurant/<%= reservation.restaurant._id %>"
+                    class="btn btn-primary mt-3 w-25 d-block mx-auto">View Restaurant</a>
+                <a href="/reservation" class="btn btn-secondary mt-3 w-25 d-block mx-auto">Book Another Table</a>
+                <a href="/" class="btn btn-dark mt-3 w-25 d-block mx-auto">Back</a>
+            </div> <!-- New Back Button -->
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

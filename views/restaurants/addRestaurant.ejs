@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+
+<section class="container my-5">
+  <h2 class="mb-4 text-center">Add New Restaurant</h2>
+
+  <form action="/restaurant/add" method="POST" enctype="multipart/form-data">
+    <div class="row g-3">
+      <!-- Name -->
+      <div class="col-md-6">
+        <label for="name" class="form-label">Restaurant Name</label>
+        <input type="text" name="name" id="name" class="form-control" placeholder="Enter restaurant name" required>
+      </div>
+
+      <!-- Address -->
+      <div class="col-md-6">
+        <label for="address" class="form-label">Address</label>
+        <input type="text" name="address" id="address" class="form-control" placeholder="Enter address" required>
+      </div>
+
+      <!-- Cuisine -->
+      <div class="col-md-6">
+        <label for="cuisine" class="form-label">Cuisine</label>
+        <input type="text" name="cuisine" id="cuisine" class="form-control" placeholder="e.g., Continental, Indian" required>
+      </div>
+
+      <!-- Phone -->
+      <div class="col-md-6">
+        <label for="phone" class="form-label">Phone</label>
+        <input type="text" name="phone" id="phone" class="form-control" placeholder="Enter phone number">
+      </div>
+
+      <!-- Email -->
+      <div class="col-md-6">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" name="email" id="email" class="form-control" placeholder="Enter email">
+      </div>
+
+      <!-- Rating -->
+      <div class="col-md-6">
+        <label for="rating" class="form-label">Rating</label>
+        <input type="number" name="rating" id="rating" class="form-control" min="0" max="5" step="0.1" placeholder="e.g., 4.5">
+      </div>
+
+      <!-- Opening Hours -->
+      <div class="col-md-6">
+        <label for="openingHours" class="form-label">Opening Hours</label>
+        <input type="text" name="openingHours" id="openingHours" class="form-control" placeholder="Mon-Sun: 9am-11pm">
+      </div>
+
+      <!-- Description (full width) -->
+      <div class="col-12">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description" id="description" class="form-control" rows="3" placeholder="Write about the restaurant"></textarea>
+      </div>
+
+      <!-- Active / Inactive -->
+      <div class="col-md-6 form-check mt-2">
+        <input type="checkbox" name="isActive" id="isActive" class="form-check-input" checked>
+        <label class="form-check-label" for="isActive">Active</label>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="col-md-6">
+        <label for="image" class="form-label">Restaurant Image</label>
+        <input type="file" name="image" id="image" class="form-control">
+      </div>
+
+      <!-- Submit Button (full width) -->
+      <div class="col-12 mt-3 text-center">
+        <button type="submit" class="btn btn-primary px-5">Add Restaurant</button>
+      </div>
+    </div>
+  </form>
+</section>
+
+<%- include('../partials/footer') %>

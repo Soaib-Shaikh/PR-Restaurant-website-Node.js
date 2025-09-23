@@ -1,0 +1,58 @@
+<%- include('./dashboardHeader') %>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Restaurants</h3>
+  <div>
+    <a href="/admin/restaurants/add" class="btn btn-success">+ Add Restaurant</a>
+    <a href="/admin/dashboard" class="btn btn-outline-secondary ms-2">Back to Dashboard</a>
+  </div>
+</div>
+
+<div class="table-card">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Cuisine</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Active</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% restaurants.forEach((r, i) => { %>
+          <tr>
+            <td><%= i+1 %></td>
+            <td>
+              <% if(r.image){ %>
+                <img src="<%= r.image %>" width="50" height="50" class="rounded">
+              <% } else { %>
+                <img src="/uploads/restaurant-default.png" width="50" height="50" class="rounded">
+              <% } %>
+            </td>
+            <td><%= r.name %></td>
+            <td><%= r.cuisine %></td>
+            <td><%= r.address %></td>
+            <td><%= r.phone || '—' %></td>
+            <td><%= r.isActive ? 'Yes' : 'No' %></td>
+            <td class="d-flex gap-3">
+              <a href="/admin/restaurants/edit/<%= r._id %>" class="btn btn-primary btn-sm">Edit</a>
+              <form action="/admin/restaurants/delete/<%= r._id %>" method="POST" class="d-inline" onsubmit="return confirm('Delete this restaurant?')">
+                <button class="btn btn-danger btn-sm">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+        <% if(restaurants.length === 0){ %>
+          <tr><td colspan="8" class="text-center py-4 text-muted">No restaurants found.</td></tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('./dashboardFooter') %>

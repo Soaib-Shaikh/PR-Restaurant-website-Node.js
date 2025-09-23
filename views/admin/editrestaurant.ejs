@@ -1,0 +1,67 @@
+<%- include('./dashboardHeader') %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0"><%= restaurant ? 'Edit Restaurant' : 'Add Restaurant' %></h3>
+  <a href="/admin/restaurants" class="btn btn-outline-secondary">Back to List</a>
+</div>
+
+<div class="form-card p-4 shadow-sm">
+  <form action="<%= restaurant ? '/admin/restaurants/edit/' + restaurant._id : '/admin/restaurants/add' %>" method="POST" enctype="multipart/form-data">
+    <div class="row g-3">
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Name</label>
+        <input name="name" required class="form-control" value="<%= restaurant ? restaurant.name : '' %>">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Cuisine</label>
+        <input name="cuisine" required class="form-control" value="<%= restaurant ? restaurant.cuisine : '' %>">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Address</label>
+        <input name="address" required class="form-control" value="<%= restaurant ? restaurant.address : '' %>">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Phone</label>
+        <input name="phone" class="form-control" value="<%= restaurant ? restaurant.phone : '' %>">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Email</label>
+        <input name="email" type="email" class="form-control" value="<%= restaurant ? restaurant.email : '' %>">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Rating (0-5)</label>
+        <input name="rating" type="number" min="0" max="5" step="0.1" class="form-control" value="<%= restaurant ? restaurant.rating : '' %>">
+      </div>
+
+      <div class="col-12">
+        <label class="form-label fw-semibold">Opening Hours</label>
+        <input name="openingHours" class="form-control" value="<%= restaurant ? restaurant.openingHours : '' %>">
+      </div>
+
+      <div class="col-12">
+        <label class="form-label fw-semibold">Description</label>
+        <textarea name="description" rows="3" class="form-control"><%= restaurant ? restaurant.description : '' %></textarea>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label fw-semibold">Image</label>
+        <input id="restImgInput" type="file" name="image" class="form-control">
+        <img id="restPreview" src="<%= restaurant && restaurant.image ? restaurant.image : '/uploads/restaurant-default.png' %>" class="mt-2 rounded shadow-sm" style="width:120px; height:auto;">
+      </div>
+
+      <div class="col-12 text-end mt-3">
+        <button class="btn btn-brand px-4 py-2"><%= restaurant ? 'Update' : 'Add Restaurant' %></button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<script> previewImage('restImgInput','restPreview'); </script>
+<%- include('./dashboardFooter') %>

@@ -1,0 +1,107 @@
+<%- include('../partials/header') %>
+
+<section id="restaurants" class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="section-title">Our Restaurants</h4>
+    <a href="/" class="btn btn-secondary mb-4">← Back to Home</a>
+
+  </div>
+
+  <div class="row">
+    <% if (restaurants.length>0) { %>
+      <% restaurants.forEach(r=> { %>
+        <div class="col-sm-6 col-md-4 mb-3">
+          <div class="card h-100 shadow-sm restaurant-card">
+            <a href="/restaurant/<%= r._id %>">
+              <img src="<%= r.image || '/uploads/restaurant-default.png' %>" class="card-img-top" alt="<%= r.name %>" style="height:200px; width:100%; object-fit:cover;">
+            </a>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title mb-1">
+                <a href="/restaurant/<%= r._id %>" class="text-decoration-none text-dark">
+                  <%= r.name %>
+                </a>
+              </h5>
+              <p class="card-text text-muted mb-1"><%= r.cuisine %></p>
+
+              <!-- Rating Stars -->
+              <div class="mb-2">
+                <% for(let i=0;i<5;i++){ %>
+                  <i class="fa fa-star <%= i < r.rating ? 'text-warning' : 'text-muted' %>"></i>
+                <% } %>
+              </div>
+
+              <p class="card-text text-truncate mb-1"><small><%= r.address %></small></p>
+              <p class="mb-2"><small>Created by: <%= r.createdBy ? r.createdBy.username : 'Unknown' %></small></p>
+
+              <% if (user && r.createdBy && user._id.toString()===r.createdBy._id.toString()) { %>
+                <div class="mt-auto">
+                  <a href="/restaurant/edit/<%= r._id %>" class="btn btn-sm btn-primary">Edit</a>
+                  <form action="/restaurant/delete/<%= r._id %>" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                  </form>
+                </div>
+              <% } else { %>
+                <a href="/restaurant/<%= r._id %>/menu" class="btn btn-sm btn-primary mt-auto">View Menu</a>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p class="text-center">No restaurants found.</p>
+    <% } %>
+  </div>
+</section>
+
+<section id="menus" class="container my-5">
+  <h4 class="section-title mb-4">Menus</h4>
+  <div class="row">
+    <% if (menus.length>0) { %>
+      <% menus.forEach(m=> { %>
+        <div class="col-sm-6 col-md-3 mb-4">
+          <div class="card h-100 shadow-sm menu-card">
+            <img src="<%= m.image || '/uploads/menu-default.png' %>" class="card-img-top" alt="<%= m.name %>" style="height:180px; object-fit:cover;">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title mb-2" style="font-size:1.1rem;"><%= m.name %></h5>
+              <p class="card-text mb-1 text-muted" style="font-size:0.9rem;">Category: <%= m.category || 'N/A' %></p>
+              <p class="badge bg-success mb-2">Rs.<%= m.price || '0' %></p>
+              <p class="card-text text-truncate mb-2"><%= m.description || '' %></p>
+              <div class="mt-auto">
+                <small class="text-muted"><%= m.restaurant ? m.restaurant.name : 'Unknown Restaurant' %></small>
+
+                <!-- ✅ Order Now Form -->
+                <% if(user){ %>
+                  <form action="/order" method="POST" class="mt-2">
+                    <input type="hidden" name="restaurantId" value="<%= m.restaurant ? m.restaurant._id : '' %>">
+                    <input type="hidden" name="items[0][menuId]" value="<%= m._id %>">
+                    <input type="hidden" name="items[0][quantity]" value="1">
+                    <button type="submit" class="btn btn-sm btn-primary w-100">Order Now</button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p class="text-center">No menus found.</p>
+    <% } %>
+  </div>
+</section>
+
+<style>
+  .restaurant-card, .menu-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .restaurant-card:hover, .menu-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  }
+  .text-truncate {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+
+<%- include('../partials/footer') %>

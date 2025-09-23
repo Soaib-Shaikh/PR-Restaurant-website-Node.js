@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bar Houch</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    .menu-icons { width: 1.5vw; height: 1.5vw; }
+    .parag { color: #757575; font-size: 14px; line-height: 24px; }
+    span.reserve { background-color: #007bff; color: #fff; padding: 10px; }
+    body { padding-top: 70px; }
+
+    .navbar .dropdown-menu { z-index: 2000; }
+    .navbar .dropdown:hover .dropdown-menu { display: block; }
+    .hovereffect { float: left; overflow: hidden; position: relative; text-align: center; cursor: default; }
+    .hovereffect .overlay { width: 100%; height: 100%; position: absolute; overflow: hidden; top: 0; left: 0; background-color: #0d122f94; transition: all 0.4s ease-in-out; }
+    .hovereffect:hover .overlay { background-color: rgba(48, 152, 157, 0.4); }
+    .hovereffect img { display: block; position: relative; }
+    .hovereffect h2 { text-transform: uppercase; color: #fff; text-align: center; position: relative; font-size: 17px; padding: 10px; background: rgba(24, 33, 55, 0.73); transform: translateY(45px); transition: all 0.4s ease-in-out; }
+    .hovereffect:hover h2 { transform: translateY(5px); }
+    .dashboard-card { border: none; border-radius: 15px; transition: all 0.3s ease-in-out; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .dashboard-card:hover { transform: translateY(-8px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #0d122f;">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <span class="text-info fw-bold">B</span>ar Houch
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto align-items-center">
+
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/restaurant">Restaurant</a></li>
+          <li class="nav-item"><a class="nav-link" href="#chefs">Chefs</a></li>
+
+          <!-- Menus Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="menuDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Menus
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="menuDropdown">
+              <li><a class="dropdown-item" href="/menu/category/Indian">Indian</a></li>
+              <li><a class="dropdown-item" href="/menu/category/Chinese">Chinese</a></li>
+              <li><a class="dropdown-item" href="/menu/category/Italian">Italian</a></li>
+              <li><a class="dropdown-item" href="/menu/category/Mexican">Mexican</a></li>
+              <li><a class="dropdown-item" href="/menu/category/Cafe">Cafe</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link btn btn-primary text-white ms-2" href="/reserve">Reserve a table</a>
+          </li>
+
+          <% if(user){ %>
+            <li class="nav-item dropdown ms-3">
+              <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Profile
+                <% if (user.profileImage && user.profileImage !=="/uploads/default-avatar.png") { %>
+                  <img src="<%= user.profileImage %>" alt="Profile Picture" class="rounded-circle ms-2"
+                    style="width:32px; height:32px;" />
+                <% } else { %>
+                  <div class="rounded-circle ms-2 d-flex justify-content-center align-items-center text-white"
+                       style="width:32px; height:32px; background-color:#007bff; font-weight:bold;">
+                    <%= user.username ? user.username.charAt(0).toUpperCase() : 'U' %>
+                  </div>
+                <% } %>
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li class="dropdown-header">Reservations</li>
+                <li>
+                  <a class="dropdown-item" href="/reserve/my">My Reservations</a>
+                </li>
+                <% if (userReservations && userReservations.length > 0) { %>
+                  <% userReservations.forEach(res => { %>
+                    <li>
+                      <a class="dropdown-item" href="/reserve/success/<%= res._id %>">
+                        <% if (res.restaurant) { %>
+                          <%= res.restaurant.name %> - <%= new Date(res.date).toDateString() %> at <%= res.time %>
+                        <% } else { %>
+                          Unknown Restaurant - <%= new Date(res.date).toDateString() %> at <%= res.time %>
+                        <% } %>
+                      </a>
+                    </li>
+                  <% }) %>
+                  <li><hr class="dropdown-divider"></li>
+                <% } else { %>
+                  <li><span class="dropdown-item text-muted">No reservations</span></li>
+                  <li><hr class="dropdown-divider"></li>
+                <% } %>
+
+                <li><a class="dropdown-item" href="/user/profile">View Profile</a></li>
+                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+              </ul>
+            </li>
+          <% } else { %>
+            <li class="nav-item ms-2"><a class="nav-link" href="/login">Login</a></li>
+          <% } %>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="header"></header>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

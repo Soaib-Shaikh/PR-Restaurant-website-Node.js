@@ -1,0 +1,62 @@
+<%- include('../partials/header') %>
+
+<section class="container my-5">
+  <h4 class="section-title text-center">Reserve a Table</h4>
+  <p class="text-center text-muted">Select Restaurant & Time</p>
+
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form action="/reserve" method="POST" class="card p-4 shadow-sm rounded">
+        <!-- Restaurant Select -->
+        <div class="mb-3">
+          <label for="restaurant" class="form-label">Restaurant</label>
+          <select name="restaurant" id="restaurant" class="form-select" required>
+            <option value="">Select Restaurant</option>
+            <% restaurants.forEach(r => { %>
+              <option value="<%= r._id %>"><%= r.name %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <!-- Name Input -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input type="text" name="name" id="name" class="form-control" placeholder="Enter your name" required>
+        </div>
+        <!-- Email Input-->
+        <div class="mb-3">
+          <label for="email" class="form-label">Your Email</label>
+          <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+
+        <!-- Phone Input -->
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone Number</label>
+          <input type="tel" name="phone" id="phone" class="form-control" placeholder="Enter your phone number" required>
+        </div>
+
+        <!-- Date Input -->
+        <div class="mb-3">
+          <label for="date" class="form-label">Date</label>
+          <input type="date" name="date" id="date" class="form-control" required>
+        </div>
+
+        <!-- Time Input -->
+        <div class="mb-3">
+          <label for="time" class="form-label">Time</label>
+          <input type="time" name="time" id="time" class="form-control" required>
+        </div>
+
+        <!-- Guests Input -->
+        <div class="mb-3">
+          <label for="guests" class="form-label">Number of Guests</label>
+          <input type="number" name="guests" id="guests" class="form-control" min="1" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Reserve Table</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

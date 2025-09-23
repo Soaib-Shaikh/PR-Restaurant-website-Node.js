@@ -1,0 +1,39 @@
+<%- include('./dashboardHeader') %>
+
+<div class="row g-4 mt-5">
+  <div class="col-md-3">
+    <div class="stat-card p-5 text-center shadow-sm" style="min-height:150px;">
+      <h6 class="text-muted mb-3">Total Restaurants</h6>
+      <p class="fs-1 fw-bold mb-0"><%= totalRestaurants || 0 %></p>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="stat-card p-5 text-center shadow-sm" style="min-height:150px;">
+      <h6 class="text-muted mb-3">Total Menus</h6>
+      <p class="fs-1 fw-bold mb-0"><%= totalMenus || 0 %></p>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="stat-card p-5 text-center shadow-sm" style="min-height:150px;">
+      <h6 class="text-muted mb-3">Total Reservations</h6>
+      <p class="fs-1 fw-bold mb-0"><%= totalReservations || 0 %></p>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="stat-card p-5 text-center shadow-sm" style="min-height:150px;">
+      <h6 class="text-muted mb-3">Pending Reservations</h6>
+      <p class="fs-1 fw-bold mb-0"><%= pendingReservations || 0 %></p>
+    </div>
+  </div>
+</div>
+
+<div class="mt-5 d-flex flex-wrap gap-3">
+  <a href="/admin/restaurants" class="btn btn-brand px-5 py-3">Manage Restaurants</a>
+  <a href="/admin/menus" class="btn btn-outline-primary px-5 py-3">Manage Menus</a>
+  <a href="/admin/reservations" class="btn btn-outline-secondary px-5 py-3">View Reservations</a>
+</div>
+
+<%- include('./dashboardFooter') %>

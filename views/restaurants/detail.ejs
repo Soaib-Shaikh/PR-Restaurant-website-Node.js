@@ -1,0 +1,81 @@
+<%- include('../partials/header') %>
+
+<div class="container my-5">
+  <!-- Back Button -->
+  <a href="/restaurant" class="btn btn-secondary mb-4">← Back to Restaurant</a>
+
+  <div class="row mb-4">
+    <!-- Restaurant Image -->
+    <div class="col-md-4">
+      <img src="<%= restaurant.image || '/uploads/restaurant-default.png' %>" class="img-fluid rounded shadow-sm" alt="<%= restaurant.name %>">
+    </div>
+
+    <!-- Restaurant Details -->
+    <div class="col-md-8">
+      <h2><%= restaurant.name %></h2>
+      <p><strong>Cuisine:</strong> <%= restaurant.cuisine %></p>
+      <p><strong>Address:</strong> <%= restaurant.address %></p>
+      <% if(restaurant.phone) { %>
+        <p><strong>Phone:</strong> <%= restaurant.phone %></p>
+      <% } %>
+      <% if(restaurant.email) { %>
+        <p><strong>Email:</strong> <%= restaurant.email %></p>
+      <% } %>
+      <% if(restaurant.description) { %>
+        <p><strong>Description:</strong> <%= restaurant.description %></p>
+      <% } %>
+    </div>
+  </div>
+
+  <hr>
+
+  <h4>Menus</h4>
+  <div class="row">
+    <% if (menus.length > 0) { %>
+      <% menus.forEach(m => { %>
+        <div class="col-md-3 mb-3">
+          <div class="card h-100 shadow-sm">
+            <img src="<%= m.image || '/uploads/menu-default.png' %>" class="card-img-top" style="height:180px; object-fit:cover;" alt="<%= m.name %>">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title mb-2"><%= m.name %></h5>
+              <p class="card-text fw-bold mb-1">Rs.<%= m.price || '0' %></p>
+              <p class="card-text text-muted mb-2"><%= m.category %></p>
+
+              <!-- Owner only buttons -->
+              <% if (user && user._id.toString() === restaurant.createdBy.toString()) { %>
+                <div class="mt-auto">
+                  <a href="/menu/edit/<%= m._id %>" class="btn btn-sm btn-primary mb-1">Edit</a>
+                  <form action="/menu/delete/<%= m._id %>" method="POST" class="d-inline">
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                  </form>
+                </div>
+              <% } %>
+
+              <!-- ✅ Order Now Form -->
+              <% if(user && user.role !== 'admin') { %>
+                <form action="/order" method="POST" class="mt-2">
+                  <input type="hidden" name="restaurantId" value="<%= restaurant._id %>">
+                  <input type="hidden" name="items[0][menuId]" value="<%= m._id %>">
+                  <input type="hidden" name="items[0][quantity]" value="1">
+                  <button type="submit" class="btn btn-primary w-100">Order Now</button>
+                </form>
+              <% } %>
+
+              <div class="mt-auto">
+                <small class="text-muted"><%= restaurant.name %></small>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p>No menus available for this restaurant.</p>
+    <% } %>
+  </div>
+
+  <!-- Add Menu Button -->
+  <% if (user && user._id.toString() === restaurant.createdBy.toString()) { %>
+    <a href="/menu/add/<%= restaurant._id %>" class="btn btn-success mt-3">+ Add Menu</a>
+  <% } %>
+
+<%- include('../partials/footer') %>

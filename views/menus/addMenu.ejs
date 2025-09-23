@@ -1,0 +1,68 @@
+<%- include('../partials/header') %>
+
+    <section class="container my-5">
+        <h2 class="mb-4">Add Menu Item</h2>
+
+        <form action="/menu/add<%= typeof restaurant !== 'undefined' && restaurant ? '/' + restaurant._id : '' %>"
+            method="POST" enctype="multipart/form-data">
+            <!-- If multiple restaurants are passed, show dropdown -->
+            <% if (typeof restaurants !=='undefined' && Array.isArray(restaurants)) { %>
+                <div class="mb-3">
+                    <label for="restaurant">Select Restaurant</label>
+                    <select name="restaurant" id="restaurant" class="form-control" required>
+                        <option value="">--Select--</option>
+                        <% restaurants.forEach(r=> { %>
+                            <option value="<%= r._id %>">
+                                <%= r.name %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <% } else if (typeof restaurant !=='undefined' && restaurant) { %>
+                    <!-- If a single restaurant is passed, hide as hidden input and show label -->
+                    <input type="hidden" name="restaurant" value="<%= restaurant._id %>">
+                    <div class="mb-3">
+                        <label>Restaurant</label>
+                        <input class="form-control" value="<%= restaurant.name %>" disabled>
+                    </div>
+                    <% } else { %>
+                        <div class="alert alert-warning">No restaurants available. Please add a restaurant first.</div>
+                        <% } %>
+
+                            <div class="mb-3">
+                                <label>Menu Name</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Category</label>
+                                <select name="category" class="form-control" required>
+                                    <option value="">--Select Category--</option>
+                                    <option value="Indian">Indian</option>
+                                    <option value="Chinese">Chinese</option>
+                                    <option value="Italian">Italian</option>
+                                    <option value="Mexican">Mexican</option>
+                                    <option value="Cafe">Cafe</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Description</label>
+                                <textarea name="description" class="form-control"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Price</label>
+                                <input type="number" class="form-control" name="price" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Upload Image</label>
+                                <input type="file" class="form-control" name="image">
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Add Menu</button>
+        </form>
+    </section>
+
+    <%- include('../partials/footer') %>
