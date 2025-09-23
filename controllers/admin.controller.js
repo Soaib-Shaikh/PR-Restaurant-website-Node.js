@@ -24,8 +24,6 @@ exports.adminDashboard = async (req, res) => {
     }
 };
 
-/* ------------------ RESERVATIONS CRUD ------------------ */
-
 // 📌 List all reservations
 exports.manageReservations = async (req, res) => {
     try {
@@ -73,7 +71,6 @@ exports.editReservationPage = async (req, res) => {
     }
 };
 
-// 📌 Update Reservation
 // Update reservation status
 exports.updateReservation = async (req, res) => {
   try {
