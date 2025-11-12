@@ -62,27 +62,16 @@ exports.signup = async (req, res) => {
         // Password hash
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-        req.session.tempUser = {
+        // Create user immediately without OTP verification (online/staging sites)
+        const newUser = await User.create({
             username,
             email,
             password: hashedPassword,
-            otp,
-            otpExpire: Date.now() + 10 * 60 * 1000
-        }
+            role: 'user'
+        });
 
-        await sendMail(
-            email,
-            "Your OTP code",
-            `<h2>Hello ${username},</h2>
-             <p>Your OTP is:</p>
-             <h1>${otp}</h1>
-             <p>Valid for 10 minutes.</p>`
-        )
-
-        req.flash('success_msg', 'OTP sent to your email.');
-        return res.render('pages/otpVerify');
+        req.flash('success_msg', 'Account created successfully. Please login.');
+        return res.redirect('/login');
 
     } catch (err) {
         console.error(err);
@@ -116,7 +105,7 @@ exports.otpVerify = async (req, res) => {
             return res.redirect("/login");
         }
     }
-    catch {
+    catch (error) {
         console.log(error);
         req.flash("error_msg", "OTP verification failed.");
         return res.redirect(req.get('Referrer') || '/');
