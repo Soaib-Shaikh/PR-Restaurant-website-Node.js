@@ -109,8 +109,8 @@ Link:-  https://pr-restaurant-website-node-js.onrender.com
 5. Visit `http://localhost:3000` in your browser
 
 ## Admin Credentials
-- **Username:** Soaib10
-- **Password:** Soaib1002
+- **Email:** samshaikh1192@gmail.com
+- **Password:** 1002
 
 ## License
 This project is for educational purposes.
