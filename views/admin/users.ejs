@@ -1,0 +1,62 @@
+<%- include('./dashboardHeader') %>
+
+    <div class="container my-5">
+
+        <h2 class="mb-4">Users</h2>
+
+        <table class="table table-striped shadow-sm bg-white">
+
+            <thead class="table-dark">
+
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <% users.forEach((u,i)=>{ %>
+
+                    <tr>
+
+                        <td>
+                            <%= i+1 %>
+                        </td>
+
+                        <td>
+                            <%= u.username %>
+                        </td>
+
+                        <td>
+                            <%= u.email %>
+                        </td>
+
+                        <td>
+
+                            <form action="/admin/users/delete/<%= u._id %>" method="POST">
+
+                                <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this user?')">
+
+                                    Delete
+
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    <% }) %>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <%- include('./dashboardFooter') %>

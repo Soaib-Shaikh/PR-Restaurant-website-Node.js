@@ -6,8 +6,9 @@ const menuRoutes = require('../routers/menuRoutes');
 const reservationRoutes = require('../routers/reservationRoutes');
 const adminRoutes = require('../routers/adminRoutes');
 const orderRoutes = require('../routers/orderRoutes')
+const chefRoutes = require('../routers/chefRoutes')
 
-const { homePage, signupPage, signup, loginPage, logout } = require('../controllers/homeControllers');
+const { homePage, signupPage, signup, loginPage, logout, otpVerifyPage, otpVerify } = require('../controllers/homeControllers');
 const router = Router();
 
 // Routers
@@ -16,12 +17,15 @@ router.use('/restaurant', restaurantRoutes);
 router.use('/menu', menuRoutes);
 router.use('/reserve', reservationRoutes);
 router.use('/admin', adminRoutes);
-router.use('/order', orderRoutes)
-
+router.use('/order', orderRoutes);
+router.use('/chef', chefRoutes)
 
 // Signup & Login
 router.get('/signup', signupPage);
 router.post('/signup', signup);
+
+router.get('/otpVerify', otpVerifyPage);
+router.post('/otpVerify', otpVerify);
 
 router.get('/login', loginPage);
 router.post('/login', (req, res, next) => {

@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const sendMail = require('../middlewares/sendMail');
 const Restaurant = require('../models/restaurantSchema')
 const Menu = require('../models/menuSchema')
+const Chef = require('../models/chefSchema')
 
 exports.homePage = async (req, res) => {
     try {
@@ -23,12 +24,14 @@ exports.homePage = async (req, res) => {
             menusByCategory[cat] = menu || null;
         }
 
+        const chefs = await Chef.find();
         // Render EJS aur variables pass karo
         res.render('index', {  // agar file path index.ejs hai
             restaurants,
             categories,
             menusByCategory,
-            user: req.user
+            user: req.user,
+            chefs
         });
 
     } catch (error) {
@@ -98,30 +101,44 @@ exports.otpVerifyPage = (req, res) => {
 
 exports.otpVerify = async (req, res) => {
     try {
-        const { email, otp } = req.body;
+
+        const { otp } = req.body;
 
         const tempUser = req.session.tempUser;
+
+        if (!tempUser) {
+            req.flash("error_msg", "Session expired.");
+            return res.redirect('/signup');
+        }
+
         if (tempUser.otp !== otp || tempUser.otpExpire < Date.now()) {
             req.flash("error_msg", "Invalid or expired OTP.");
             return res.redirect("/otpVerify");
         }
-        const newUser = await User.create({ ...tempUser })
+
+        const newUser = await User.create({
+            username: tempUser.username,
+            email: tempUser.email,
+            password: tempUser.password
+        });
 
         req.session.tempUser = null;
-        req.flash("success_msg", "Email verified successfully. Please login.");
-        if(newUser.role == 'admin'){
-            return res.redirect('/admin/dashboard');
-        }
-        else{
-            return res.redirect("/login");
-        }
+
+        req.flash("success_msg", "Account created successfully. Please login.");
+
+        return res.redirect("/login");
+
     }
-    catch {
+    catch (error) {
+
         console.log(error);
+
         req.flash("error_msg", "OTP verification failed.");
-        return res.redirect(req.get('Referrer') || '/');
+
+        return res.redirect("/signup");
+
     }
-}
+};
 
 exports.logout = (req, res, next) => {
     req.logout(function (err) {

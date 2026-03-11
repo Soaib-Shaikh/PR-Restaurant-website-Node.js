@@ -1,0 +1,41 @@
+<%- include('../partials/header') %>
+    <div class="container mt-5">
+
+        <h2 class="text-center mb-4">Our Chefs</h2>
+
+        <div class="row">
+
+            <% chefs.map(chef=> { %>
+
+                <div class="col-md-3">
+
+                    <div class="card shadow">
+
+                        <img src="<%= chef.image %>" class="card-img-top">
+
+                        <div class="card-body text-center">
+
+                            <h5>
+                                <%= chef.name %>
+                            </h5>
+
+                            <p>
+                                <%= chef.speciality %>
+                            </p>
+
+                            <p><b>
+                                    <%= chef.experience %> Years Experience
+                                </b></p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <% }) %>
+
+        </div>
+
+    </div>
+<%- include('../partials/footer') %>

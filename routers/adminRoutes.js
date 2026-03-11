@@ -46,4 +46,14 @@ router.post('/reservations/delete/:id', adminAuth, adminController.deleteReserva
 
 router.post('/reservations/edit/:id', adminAuth, adminController.updateReservationStatus);
 
+router.get('/chefs', adminAuth, adminController.listChefs);
+router.get('/chefs/add', adminAuth, adminController.addChefPage);
+router.post('/chefs/add', adminAuth, upload.single('image'), adminController.createChef);
+router.get('/chefs/edit/:id', adminController.editChefPage);
+router.post('/chefs/edit/:id', upload.single('image'), adminController.updateChef);
+router.post('/chefs/delete/:id', adminController.deleteChef);
+
+router.get('/users', adminAuth, adminController.listUsers);
+router.post('/users/delete/:id', adminAuth, adminController.deleteUser);
+
 module.exports = router;

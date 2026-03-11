@@ -1,39 +1,241 @@
 <%- include('./dashboardHeader') %>
 
-<div class="row g-4 mt-5">
-  <div class="col-md-3">
-    <div class="stat-card p-5 text-center shadow-sm" style="min-height:150px;">
-      <h6 class="text-muted mb-3">Total Restaurants</h6>
-      <p class="fs-1 fw-bold mb-0"><%= totalRestaurants || 0 %></p>
+  <div class="row g-4">
+
+    <div class="col-md-3">
+      <div class="stat-card bg-purple text-white p-4">
+        <h3>
+          <%= totalUsers %>
+        </h3>
+        <p>Total Users</p>
+      </div>
     </div>
+
+    <!-- Restaurants -->
+    <div class="col-md-3">
+      <div class="stat-card bg-red text-white p-4">
+        <h3>
+          <%= totalRestaurants %>
+        </h3>
+        <p>Total Restaurants</p>
+      </div>
+    </div>
+
+    <!-- Menus -->
+    <div class="col-md-3">
+      <div class="stat-card bg-yellow text-white p-4">
+        <h3>
+          <%= totalMenus %>
+        </h3>
+        <p>Total Menus</p>
+      </div>
+    </div>
+
+    <!-- Reservations -->
+    <div class="col-md-3">
+      <div class="stat-card bg-green text-white p-4">
+        <h3>
+          <%= totalReservations %>
+        </h3>
+        <p>Total Reservations</p>
+      </div>
+    </div>
+
+    <!-- Pending Reservations -->
+    <div class="col-md-3">
+      <div class="stat-card bg-danger text-white p-4">
+        <h3>
+          <%= pendingReservations %>
+        </h3>
+        <p>Pending Reservations</p>
+      </div>
+    </div>
+
+    <!-- Chefs -->
+    <div class="col-md-3">
+      <div class="stat-card bg-blue text-white p-4">
+        <h3>
+          <%= totalChefs %>
+        </h3>
+        <p>Total Chefs</p>
+      </div>
+    </div>
+
   </div>
 
-  <div class="col-md-3">
-    <div class="stat-card p-5 text-center shadow-sm" style="min-height:150px;">
-      <h6 class="text-muted mb-3">Total Menus</h6>
-      <p class="fs-1 fw-bold mb-0"><%= totalMenus || 0 %></p>
+
+
+  <!-- QUICK ACTIONS SECTION -->
+
+  <div class="mt-5">
+
+    <h4 class="mb-4 fw-bold">Quick Actions</h4>
+
+    <div class="row g-4">
+
+      <div class="col-md-3">
+        <a href="/admin/restaurants" class="action-card">
+          <i class="fa fa-store"></i>
+          <h5>Restaurants</h5>
+          <p>Manage restaurant list</p>
+        </a>
+      </div>
+
+      <div class="col-md-3">
+        <a href="/admin/menus" class="action-card">
+          <i class="fa fa-utensils"></i>
+          <h5>Menus</h5>
+          <p>Add & edit menu items</p>
+        </a>
+      </div>
+
+      <div class="col-md-3">
+        <a href="/admin/reservations" class="action-card">
+          <i class="fa fa-calendar"></i>
+          <h5>Reservations</h5>
+          <p>View bookings</p>
+        </a>
+      </div>
+
+      <div class="col-md-3">
+        <a href="/admin/chefs" class="action-card">
+          <i class="fa fa-user"></i>
+          <h5>Chefs</h5>
+          <p>Manage chefs</p>
+        </a>
+      </div>
+
     </div>
+
   </div>
 
-  <div class="col-md-3">
-    <div class="stat-card p-5 text-center shadow-sm" style="min-height:150px;">
-      <h6 class="text-muted mb-3">Total Reservations</h6>
-      <p class="fs-1 fw-bold mb-0"><%= totalReservations || 0 %></p>
+
+  <div class="row mt-5">
+
+    <div class="col-md-6">
+      <div class="card p-3">
+        <h5>Reservations Overview</h5>
+        <canvas id="reservationChart"></canvas>
+      </div>
     </div>
+
+    <div class="col-md-6">
+      <div class="card p-3">
+        <h5>Platform Statistics</h5>
+        <canvas id="statsChart"></canvas>
+      </div>
+    </div>
+
   </div>
 
-  <div class="col-md-3">
-    <div class="stat-card p-5 text-center shadow-sm" style="min-height:150px;">
-      <h6 class="text-muted mb-3">Pending Reservations</h6>
-      <p class="fs-1 fw-bold mb-0"><%= pendingReservations || 0 %></p>
-    </div>
-  </div>
-</div>
+  <style>
+    /* STATS CARDS */
 
-<div class="mt-5 d-flex flex-wrap gap-3">
-  <a href="/admin/restaurants" class="btn btn-brand px-5 py-3">Manage Restaurants</a>
-  <a href="/admin/menus" class="btn btn-outline-primary px-5 py-3">Manage Menus</a>
-  <a href="/admin/reservations" class="btn btn-outline-secondary px-5 py-3">View Reservations</a>
-</div>
+    .stat-card {
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: .2s;
+    }
 
-<%- include('./dashboardFooter') %>
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* COLORS */
+
+    .bg-red {
+      background: #e74c3c;
+    }
+
+    .bg-yellow {
+      background: #f39c12;
+    }
+
+    .bg-green {
+      background: #27ae60;
+    }
+
+    .bg-blue {
+      background: #2980b9;
+    }
+
+
+    /* ACTION CARDS */
+
+    .action-card {
+      display: block;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      text-align: center;
+      text-decoration: none;
+      color: #333;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      transition: .2s;
+    }
+
+    .action-card i {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #0f766e;
+    }
+
+    .action-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const ctx = document.getElementById('reservationChart');
+
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            datasets: [{
+              label: "Reservations",
+              data: [12, 19, 10, 15, 22, 30],
+              borderColor: "#0f766e",
+              backgroundColor: "rgba(15,118,110,0.2)",
+              fill: true
+            }]
+          }
+        });
+      }
+
+      const stats = document.getElementById('statsChart');
+
+      if (stats) {
+        new Chart(stats, {
+          type: 'doughnut',
+          data: {
+            labels: ["Users", "Restaurants", "Menus", "Chefs"],
+            datasets: [{
+              data: [
+              <%= totalUsers || 0 %>,
+              <%= totalRestaurants || 0 %>,
+              <%= totalMenus || 0 %>,
+              <%= totalChefs || 0 %>
+              ],
+              backgroundColor: [
+                "#6f42c1",
+                "#0f766e",
+                "#f39c12",
+                "#2980b9"
+              ]
+            }]
+          }
+        });
+      }
+
+    });
+
+  </script>
+
+  <%- include('./dashboardFooter') %>

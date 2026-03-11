@@ -1,6 +1,8 @@
 const Restaurant = require('../models/restaurantSchema');
 const Menu = require('../models/menuSchema');
 const Reservation = require('../models/reservationSchema');
+const Chef = require('../models/chefSchema');
+const User = require('../models/userSchema');
 
 // ---------------- DASHBOARD ----------------
 exports.adminDashboard = async (req, res) => {
@@ -8,14 +10,17 @@ exports.adminDashboard = async (req, res) => {
         const totalRestaurants = await Restaurant.countDocuments();
         const totalMenus = await Menu.countDocuments();
         const totalReservations = await Reservation.countDocuments();
-        const pendingReservations = await Reservation.countDocuments(); // agar pending ka field ho to filter lagana hoga
-
+        const pendingReservations = await Reservation.countDocuments();
+        const totalChefs = await Chef.countDocuments();
+        const totalUsers = await User.countDocuments();
         res.render('admin/dashBoard', {
             user: req.user,
             totalRestaurants,
             totalMenus,
             totalReservations,
-            pendingReservations
+            pendingReservations,
+            totalChefs,
+            totalUsers
         });
     } catch (err) {
         console.error(err);
@@ -73,19 +78,19 @@ exports.editReservationPage = async (req, res) => {
 
 // Update reservation status
 exports.updateReservation = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
 
-    await Reservation.findByIdAndUpdate(id, { status: status });
+        await Reservation.findByIdAndUpdate(id, { status: status });
 
-    req.flash('success_msg', 'Reservation status updated successfully');
-    return res.redirect('/admin/reservations'); // redirect to the list page so new status shows
-  } catch (err) {
-    console.error(err);
-    req.flash('error_msg', 'Failed to update reservation');
-    return res.redirect('/admin/reservations');
-  }
+        req.flash('success_msg', 'Reservation status updated successfully');
+        return res.redirect('/admin/reservations'); // redirect to the list page so new status shows
+    } catch (err) {
+        console.error(err);
+        req.flash('error_msg', 'Failed to update reservation');
+        return res.redirect('/admin/reservations');
+    }
 };
 
 // 📌 Delete Reservation
@@ -223,7 +228,7 @@ exports.updateReservationStatus = async (req, res) => {
         const { status } = req.body;
 
         // Validate status
-        if (!['pending','confirmed','completed','cancelled'].includes(status)) {
+        if (!['pending', 'confirmed', 'completed', 'cancelled'].includes(status)) {
             req.flash('error_msg', 'Invalid status');
             return res.redirect('back');
         }
@@ -245,3 +250,159 @@ exports.updateReservationStatus = async (req, res) => {
         return res.redirect('back');
     }
 };
+
+
+exports.listChefs = async (req, res) => {
+
+    const chefs = await Chef.find();
+
+    res.render("admin/chefList", { chefs, user: req.user });
+
+};
+
+
+exports.addChefPage = (req, res) => {
+
+    res.render("admin/addChef", { user: req.user });
+
+};
+
+exports.createChef = async (req, res) => {
+
+    const { name, speciality, experience } = req.body;
+
+    let image = "";
+
+    if (req.file) {
+        image = "/uploads/admin/" + req.file.filename;
+    }
+
+    await Chef.create({
+        name,
+        speciality,
+        experience,
+        image
+    });
+
+    res.redirect("/admin/chefs");
+
+};
+
+exports.editChefPage = async (req, res) => {
+
+    try {
+
+        const chef = await Chef.findById(req.params.id);
+
+        if (!chef) {
+            req.flash('error_msg', 'Chef not found');
+            return res.redirect('/admin/chefs');
+        }
+
+        res.render('admin/editChef', {
+            chef,
+            user: req.user
+        });
+
+    } catch (error) {
+
+        console.log(error);
+        res.redirect('/admin/chefs');
+
+    }
+
+};
+
+exports.updateChef = async (req, res) => {
+
+    try {
+
+        const { name, speciality, experience } = req.body;
+
+        const chef = await Chef.findById(req.params.id);
+
+        if (!chef) {
+            req.flash('error_msg', 'Chef not found');
+            return res.redirect('/admin/chefs');
+        }
+
+        chef.name = name;
+        chef.speciality = speciality;
+        chef.experience = experience;
+
+        if (req.file) {
+            chef.image = "/uploads/admin/" + req.file.filename;
+        }
+
+        await chef.save();
+
+        req.flash('success_msg', 'Chef updated successfully');
+
+        res.redirect('/admin/chefs');
+
+    } catch (error) {
+
+        console.log(error);
+        res.redirect('/admin/chefs');
+
+    }
+
+};
+
+exports.deleteChef = async (req, res) => {
+
+    try {
+
+        await Chef.findByIdAndDelete(req.params.id);
+
+        req.flash('success_msg', 'Chef deleted successfully');
+
+        res.redirect('/admin/chefs');
+
+    } catch (error) {
+
+        console.log(error);
+        res.redirect('/admin/chefs');
+
+    }
+
+};
+
+exports.listUsers = async (req, res) => {
+
+    try {
+
+        const users = await User.find({ role: "user" });
+
+        res.render("admin/users", {
+            users,
+            user: req.user
+        });
+
+    } catch (err) {
+
+        console.log(err);
+        res.redirect("/admin/dashboard");
+
+    }
+
+}
+
+exports.deleteUser = async (req, res) => {
+
+    try {
+
+        await User.findByIdAndDelete(req.params.id);
+
+        req.flash("success_msg", "User deleted");
+
+        res.redirect("/admin/users");
+
+    } catch (err) {
+
+        console.log(err);
+        res.redirect("/admin/users");
+
+    }
+
+}

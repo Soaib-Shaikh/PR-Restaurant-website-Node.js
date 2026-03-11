@@ -134,40 +134,41 @@
 
     <!-- Chefs Section -->
     <section id="chefs" class="container my-5">
+
       <h4 class="section-title">Meet Our Chefs</h4>
+
       <p class="text-center text-muted">THEY ARE NICE & FRIENDLY</p>
+
       <div class="d-flex flex-wrap justify-content-center">
-        <div class="hovereffect" style="width: 200px; height: 200px;">
-          <img src="/uploads/sys/chef-1.jpg" alt="Ibrahim">
-          <div class="overlay">
-            <h5>Ibrahim</h5>
-          </div>
-        </div>
-        <div class="hovereffect" style="width: 200px; height: 200px;">
-          <img src="/uploads/sys/chef-2.jpg" alt="Ramy">
-          <div class="overlay">
-            <h5>Ramy</h5>
-          </div>
-        </div>
-        <div class="hovereffect" style="width: 200px; height: 200px;">
-          <img src="/uploads/sys/chef-3.jpg" alt="Lamine">
-          <div class="overlay">
-            <h5>Lamine</h5>
-          </div>
-        </div>
-        <div class="hovereffect" style="width: 200px; height: 200px;">
-          <img src="/uploads/sys/chef-4.jpg" alt="Krimo">
-          <div class="overlay">
-            <h5>Krimo</h5>
-          </div>
-        </div>
-        <div class="hovereffect" style="width: 200px; height: 200px;">
-          <img src="/uploads/sys/chef-5.jpg" alt="Islam">
-          <div class="overlay">
-            <h5>Islam</h5>
-          </div>
-        </div>
+
+        <% if(chefs && chefs.length){ %>
+
+          <% chefs.forEach(chef=> { %>
+
+            <div class="hovereffect" style="width:200px;height:200px;">
+
+              <img src="<%= chef.image %>" alt="<%= chef.name %>">
+
+              <div class="overlay">
+
+                <h5>
+                  <%= chef.name %>
+                </h5>
+
+              </div>
+
+            </div>
+
+            <% }) %>
+
+              <% } else { %>
+
+                <p class="text-center">No chefs available</p>
+
+                <% } %>
+
       </div>
+
     </section>
 
     <!-- Menus Section -->
@@ -218,6 +219,8 @@
       </div>
 
     </section>
+
+
 
     <%- include('./partials/footer') %>
 
